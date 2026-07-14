@@ -1,0 +1,445 @@
+<!-- (C) Panasonic i-PRO Sensing Solutions Co., Ltd. 2020 -->
+
+<HTML>
+<HEAD>
+<TITLE>SimpleSample_SnapShot</TITLE>
+
+<!-- == SCRIPT ================================================================== -->
+<SCRIPT language="JavaScript">
+	/****************************************************************
+	* Difinition
+	****************************************************************/
+	var PlayStatus = 0;
+
+	/****************************************************************
+	* Function Name        : Load
+	* Overview             : Set properties
+	****************************************************************/
+	function Load()
+	{
+		//Set properties to connect the device
+		ipropsapiCtrl.IPAddr		= "192.168.0.10";
+		ipropsapiCtrl.DeviceType	= 2;
+		ipropsapiCtrl.HttpPort		= 80;
+		ipropsapiCtrl.UserName		= "admin";
+		ipropsapiCtrl.Password		= "12345";
+		
+		//Set properties for display area
+		ipropsapiCtrl.StreamFormat		= 0;
+		ipropsapiCtrl.JPEGResolution	= 640;
+		ipropsapiCtrl.MPEG4Resolution	= 640;
+		ipropsapiCtrl.H264Resolution	= 640;
+		
+		//Set properties for event
+		ipropsapiCtrl.OnErrorEnable			= 1;
+		ipropsapiCtrl.OnDevStatusEnable		= 0;
+		ipropsapiCtrl.OnRecStatusEnable		= 0;
+		ipropsapiCtrl.OnPlayStatusEnable	= 1;
+		ipropsapiCtrl.OnImageRefreshEnable	= 0;
+		ipropsapiCtrl.OnRecordStatusEnable	= 0;
+		ipropsapiCtrl.OnOpStatusEnable		= 0;
+		ipropsapiCtrl.OnAlmStatusEnable		= 0;
+		
+		ipropsapiCtrl.OnRecStatusCBEnable	= 0;
+		ipropsapiCtrl.OnSearchCBEnable		= 0;
+		ipropsapiCtrl.OnSearchExCBEnable	= 0;
+		ipropsapiCtrl.OnPlayStatusCBEnable	= 0;
+		ipropsapiCtrl.OnOpStatusCBEnable	= 0;
+		ipropsapiCtrl.OnAlmStatusCBEnable	= 0;
+		ipropsapiCtrl.OnFtpStatusCBEnable	= 0;
+		
+		RetValue.value = ipropsapiCtrl.Open();
+		
+		lChannel = 1;
+		lBlockmode = 0;
+
+		//Setup to StartLive
+		lChannel = 1;
+		lBlockmode = 0;
+		if(RetValue.value > -1){
+			RetValue.value = ipropsapiCtrl.PlayLive(lChannel, lBlockmode)
+			if(RetValue.value > -1){
+				PlayStatus = 1;
+			}
+		}
+		else{
+			return ;
+		}
+	}
+	
+	/****************************************************************
+	* Function Name        : Unload
+	* Overview             : 
+	****************************************************************/
+	function Unload()
+	{
+		if(PlayStatus == 1){
+			//Stop Live
+			lCommand = 1;
+			lSpeed = 1;
+			lBlockmode = 0;
+			RetValue.value = ipropsapiCtrl.PlayControl(lCommand, lSpeed, lBlockmode);
+
+			//Close connection to the device
+			ipropsapiCtrl.Close();
+
+			//Clear Image
+			ipropsapiCtrl.ClearImage();
+		}
+
+		//Set properties for event
+		ipropsapiCtrl.OnErrorEnable			= 0;
+		ipropsapiCtrl.OnDevStatusEnable		= 0;
+		ipropsapiCtrl.OnRecStatusEnable		= 0;
+		ipropsapiCtrl.OnPlayStatusEnable	= 0;
+		ipropsapiCtrl.OnImageRefreshEnable	= 0;
+		ipropsapiCtrl.OnRecordStatusEnable	= 0;
+		ipropsapiCtrl.OnOpStatusEnable		= 0;
+		ipropsapiCtrl.OnAlmStatusEnable		= 0;
+		
+		ipropsapiCtrl.OnRecStatusCBEnable	= 0;
+		ipropsapiCtrl.OnSearchCBEnable		= 0;
+		ipropsapiCtrl.OnSearchExCBEnable	= 0;
+		ipropsapiCtrl.OnPlayStatusCBEnable	= 0;
+		ipropsapiCtrl.OnOpStatusCBEnable	= 0;
+		ipropsapiCtrl.OnAlmStatusCBEnable	= 0;
+		ipropsapiCtrl.OnFtpStatusCBEnable	= 0;
+	}
+
+	/****************************************************************
+	* Function Name   : ShowResult
+	* Overview        : Output list Search result 
+	****************************************************************/
+	function ShowResult()
+	{
+		//Set Search Result to list
+	}
+
+	/****************************************************************
+	* Function Name   : ShowResultEx
+	* Overview        : Output list SearchEx/VMDSearchEx result 
+	****************************************************************/
+	function ShowResultEx()
+	{
+		//Set Search Result to list
+	}
+</SCRIPT>
+
+
+<!-- == SCRIPT ================================================================== -->
+<SCRIPT language="JavaScript">
+	/****************************************************************
+	* Function Name        : JpegSnapShot
+	* Overview             : Store Jpeg format file
+	****************************************************************/
+	function JpegSnapShot()
+	{
+		if(PlayStatus == 1){
+			RetValue.value = ipropsapiCtrl.SaveJpegImage(m_fName.value);
+		}else{
+			alert("No live.");
+		}
+	}
+	
+	/****************************************************************
+	* Function Name        : DigitalZoom1
+	* Overview             : Digital zoom x1
+	****************************************************************/
+	function DigitalZoom1()
+	{
+		if(PlayStatus == 1){
+			//Digital zoom (x1)
+			ipropsapiCtrl.DigitalZoom = 10;
+		}else{
+			alert("No live.");
+		}
+	}
+
+	/****************************************************************
+	* Function Name        : DigitalZoom4
+	* Overview             : Digital zoom x4
+	****************************************************************/
+	function DigitalZoom4()
+	{
+		if(PlayStatus == 1){
+			//Digital zoom (x4)
+			ipropsapiCtrl.DigitalZoom = 40;
+		}else{
+			alert("No live.");
+		}
+	}
+
+	/****************************************************************
+	* Function Name        : DzMoveLeft
+	* Overview             : Digital zoom move to left
+	****************************************************************/
+	function DzMoveLeft()
+	{
+		if(PlayStatus == 1){
+			//Digital zoom move to left
+			lXposition = -320
+			lYposition = 0
+			RetValue.value = ipropsapiCtrl.DigitalZoomMove(lXposition, lYposition);
+		}else{
+			alert("No live.");
+		}
+	}
+
+	/****************************************************************
+	* Function Name        : DzMoveRight
+	* Overview             : Digital zoom move to right
+	****************************************************************/
+	function DzMoveRight()
+	{
+		if(PlayStatus == 1){
+			//Digital zoom move to right
+			lXposition = 320
+			lYposition = 0
+			RetValue.value = ipropsapiCtrl.DigitalZoomMove(lXposition, lYposition);
+		}else{
+			alert("No live.");
+		}
+	}
+</SCRIPT>
+</HEAD>
+
+
+<!-- == BODY ===================================================================== -->
+<BODY onLoad="Load()" onUnload="Unload()">
+
+<OBJECT ID="ipropsapiCtrl" CLASSID="CLSID:69ADBDBE-2035-4144-B52E-14753EB07CE9" width="640" height="480" VIEWASTEXT></OBJECT>
+
+<BR>
+<BR>
+
+<table>
+	<tr>
+		<td>
+			fileName:
+		</td>
+		<td>
+			<input type="text" id="m_fName" name="m_fName" size="100" value="C:\JpegSnapShot.jpg">
+		</td>
+	</tr>
+</table>
+
+<INPUT id="btnSnapShot" type="button" value="JpegSnapShot" name="btnSnapShot" onClick="JpegSnapShot()">
+
+<BR>
+<BR>
+
+<INPUT id="btnDigitalZoom1" type="button" value="Digital Zoom (x1)" name="btnDigitalZoom1" onClick="DigitalZoom1()">
+<INPUT id="btnDigitalZoom4" type="button" value="Digital Zoom (x4)" name="btnDigitalZoom4" onClick="DigitalZoom4()">
+
+<INPUT id="btnDzLeft" type="button" value="Move to Left" name="btnDzLeft" onClick="DzMoveLeft()">
+<INPUT id="btnDzRight" type="button" value="Move to Right" name="btnDzRight" onClick="DzMoveRight()">
+
+
+<BR>
+<table>
+	<tr>
+		<td>
+			Return Value:
+		</td>
+		<td>
+			<input type="text" id="RetValue" name="RetValue" size="25" value="-1">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Event:
+		</td>
+		<td>
+		<textarea type="text" id="EventLog" name="EventLog" rows="20" cols="80%" wrap="hard" value=""></textarea>
+		</td>
+	</tr>
+</table>
+
+
+<!-- == EVENT ==================================================================== -->
+<SCRIPT language="JavaScript">
+	/****************************************************************
+	* Function Name        : OnError
+	* Overview             : OnError listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnError(errorCode, description)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnError] errorCode[" + errorCode + "] description["+ description + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnDevStatus
+	* Overview             : OnDevStatus listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnDevStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnDevStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecStatus
+	* Overview             : OnRecStatus listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnRecStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnPlayStatus
+	* Overview             : OnPlayStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnPlayStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnPlayStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecordStatus
+	* Overview             : OnRecordStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnRecordStatus(rectype, timeDate, nextRecTime)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecordStatus] type[" + rectype + "] timeDate["+ timeDate + "] nextRecTime["+ nextRecTime + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnImageRefresh
+	* Overview             : OnImageRefresh listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnImageRefresh()
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnImageRefresh] No argument."
+	}
+	/****************************************************************
+	* Function Name        : OnOpStatus
+	* Overview             : OnOpStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnOpStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnOpStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnAlmStatus
+	* Overview             : OnAlmStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnAlmStatus(channel, almtype, timeDate, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnAlmStatus] channel["+ channel + "] type[" + almtype + "] timeDate["+ timeDate + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecStatusCB
+	* Overview             : OnRecStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnRecStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnSearchCB
+	* Overview             : OnSearchCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnSearchCB()
+	{
+		ShowResult();
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnSearchCB] Show Search result."
+	}
+	/****************************************************************
+	* Function Name        : OnSearchExCB
+	* Overview             : OnSearchExCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnSearchExCB()
+	{
+		ShowResultEx();
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnSearchExCB] Show Search result."
+	}
+	/****************************************************************
+	* Function Name        : OnPlayStatusCB
+	* Overview             : OnPlayStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnPlayStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnPlayStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnOpStatusCB
+	* Overview             : OnOpStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnOpStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnOpStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnAlmStatusCB
+	* Overview             : OnAlmStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnAlmStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnAlmStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnFtpStatusCB
+	* Overview             : OnFtpStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnFtpStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnFtpStatusCB] status["+ status + "]"
+	}
+</SCRIPT>
+</BODY>
+</HTML>

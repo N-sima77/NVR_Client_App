@@ -1,0 +1,135 @@
+<!-- (C) Panasonic i-PRO Sensing Solutions Co., Ltd. 2020 -->
+
+<HTML>
+<HEAD>
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>ActiveX_PSLookup</TITLE>
+<SCRIPT type="text/javascript">
+<!--
+/****************************************************************
+* Definition
+****************************************************************/
+var m_Status;
+
+/****************************************************************
+ * Function			: onLoad
+ * Outline			: 
+ ****************************************************************/
+function onLoad()
+{
+	//*****************************************************
+	// HTML load
+	//*****************************************************
+	pslookupctrl.OnDevLookupEnable = 0;
+	Logging("[Property] OnDevLookupEnable:=Off");
+	pslookupctrl.OnErrorEnable = 1;
+	m_Status = 0;
+	document.getElementById("EventLog").value = "";
+}
+
+/****************************************************************
+ * Function			: UnLoad
+ * Outline			: 
+ ****************************************************************/
+function UnLoad()
+{
+	//*****************************************************
+	// HTML unload
+	//*****************************************************
+	pslookupctrl.OnDevLookupEnable = 0;
+	pslookupctrl.OnErrorEnable = 1;
+}
+
+/****************************************************************
+ * Function			: Logging
+ * Outline			: 
+****************************************************************/
+function Logging(strLog)
+{
+	//*****************************************************
+	// Imprementation to add item to list
+	//*****************************************************
+	var strBuf = document.getElementById("EventLog").value ;
+	if ( strBuf != ""){
+		strBuf = strBuf + "\n";
+	}
+	document.getElementById("EventLog").value = strBuf + strLog;
+	
+}
+
+/****************************************************************
+ * Function			: onClickedSearch
+ * Outline			: 
+****************************************************************/
+function onClickedSearch()
+{
+	//*****************************************************
+	// Switching the camera searches
+	//*****************************************************
+	if (m_Status == 0) {
+		document.getElementById("btnSearch").value = "End";
+		m_Status = 1;
+		pslookupctrl.OnDevLookupEnable = 1;
+		Logging("[Property] OnDevLookupEnable:=On");
+	}
+	else {
+		document.getElementById("btnSearch").value = "Start";
+		m_Status = 0;
+		pslookupctrl.OnDevLookupEnable = 0;
+		Logging("[Property] OnDevLookupEnable:=Off");
+	}
+}
+-->
+</SCRIPT>
+</HEAD>
+<!-- ====== BODY ====== -->
+<BODY onload="onLoad()">
+<OBJECT id="pslookupctrl" CLASSID="clsid:33197B00-11E4-4DAE-B8CE-38DF72FDBF94" width="0" height="0">PS-API ActiveX</OBJECT>
+<BR>
+<BR>
+	Search Cameras
+	<INPUT id="btnSearch" type="button" value="Start" name="Search" onClick="onClickedSearch()">
+<BR>
+<BR>
+<TABLE  Summary="Main table of the API logging">
+	<TR><TD>List :
+	   </TD>
+	   <TD><TD><TEXTAREA id="EventLog" name="EventLog" rows="20" cols="70">Log Area</TEXTAREA>
+	   </TD>
+       </TR>
+</TABLE>
+<SCRIPT type="text/javascript">
+<!--
+//PS-API Lookup Event
+/****************************************************************
+* Function Name        : OnDevLookup
+* Overview             : OnDevLookup listener event
+****************************************************************/
+function pslookupctrl::OnDevLookup(macAddr, ipAddr, ipv6Addr, portNo, camName, modelName)
+{
+	//Output Logs
+	var Logs = "[OnDevLookup] macAddr : " + macAddr + "\n" +
+	    "ipAddr : " + ipAddr + "\n" +
+	    "ipv6Addr : " + ipv6Addr + "\n" +
+	    "portNo : " + portNo + "\n" +
+	    "camName : " + camName + "\n" +
+	    "modelName : " + modelName ;
+	Logging(Logs);
+}
+
+/****************************************************************
+* Function Name        : OnError
+* Overview             : OnError listener event
+****************************************************************/
+function pslookupctrl::OnError(errorCode, description)
+{
+	//Output Logs
+	Logging("[OnError] errorCode[" + errorCode + "] description[" + description + "]");
+}
+-->
+</SCRIPT>
+</BODY onload="Unload()">
+</HTML>
+

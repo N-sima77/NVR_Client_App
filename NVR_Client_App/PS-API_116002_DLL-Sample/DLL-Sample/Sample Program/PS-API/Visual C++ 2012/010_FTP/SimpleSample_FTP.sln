@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleSample_FTP", "SimpleSample_FTP.vcxproj", "{4850FA20-2F5B-4349-9368-FA2B4CC29A16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4850FA20-2F5B-4349-9368-FA2B4CC29A16}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4850FA20-2F5B-4349-9368-FA2B4CC29A16}.Debug|Win32.Build.0 = Debug|Win32
+		{4850FA20-2F5B-4349-9368-FA2B4CC29A16}.Release|Win32.ActiveCfg = Release|Win32
+		{4850FA20-2F5B-4349-9368-FA2B4CC29A16}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

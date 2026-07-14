@@ -1,0 +1,4 @@
+// Microsoft Visual C++ generated Help ID include file.
+// Used by SimpleSample_Live.rc
+//
+#define HIDC_VIDEO_RENDER               0x806603eb    // IDD_SIMPLESAMPLE_LIVE_DIALOG [Japonca (Japonya)]

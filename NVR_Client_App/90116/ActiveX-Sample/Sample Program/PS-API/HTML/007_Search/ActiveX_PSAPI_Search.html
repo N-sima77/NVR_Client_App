@@ -1,0 +1,717 @@
+<!-- (C) Panasonic i-PRO Sensing Solutions Co., Ltd. 2020 -->
+
+<HTML>
+<HEAD>
+<TITLE>SimpleSample_Search</TITLE>
+
+
+<!-- == SCRIPT ================================================================== -->
+<SCRIPT language="JavaScript">
+	/****************************************************************
+	* Difinition
+	****************************************************************/
+	var g_lPlayStatus = 0;
+
+	/****************************************************************
+	* Function Name        : Load
+	* Overview             : Set properties
+	****************************************************************/
+	function Load()
+	{
+		//Set properties to connect the device
+		ipropsapiCtrl.IPAddr		= "192.168.0.250";
+		ipropsapiCtrl.DeviceType	= 1;
+		ipropsapiCtrl.HttpPort		= 80;
+		ipropsapiCtrl.UserName		= "ADMIN";
+		ipropsapiCtrl.Password		= "12345";
+		
+		//Set properties for event
+		ipropsapiCtrl.OnErrorEnable			= 1;
+		ipropsapiCtrl.OnDevStatusEnable		= 0;
+		ipropsapiCtrl.OnRecStatusEnable		= 0;
+		ipropsapiCtrl.OnPlayStatusEnable	= 1;
+		ipropsapiCtrl.OnImageRefreshEnable	= 0;
+		ipropsapiCtrl.OnRecordStatusEnable	= 0;
+		ipropsapiCtrl.OnOpStatusEnable		= 0;
+		ipropsapiCtrl.OnAlmStatusEnable		= 0;
+		
+		ipropsapiCtrl.OnRecStatusCBEnable	= 0;
+		ipropsapiCtrl.OnSearchCBEnable		= 0;
+		ipropsapiCtrl.OnSearchExCBEnable	= 1;
+		ipropsapiCtrl.OnPlayStatusCBEnable	= 0;
+		ipropsapiCtrl.OnOpStatusCBEnable	= 0;
+		ipropsapiCtrl.OnAlmStatusCBEnable	= 0;
+		ipropsapiCtrl.OnFtpStatusCBEnable	= 0;
+
+		//Connect to the device
+		RetValue.value = ipropsapiCtrl.Open();
+	}
+	
+	/****************************************************************
+	* Function Name        : Unload
+	* Overview             : 
+	****************************************************************/
+	function Unload()
+	{
+		Call_PlayStop();
+		
+		//Close
+		ipropsapiCtrl.Close();
+		
+		//Set properties for event
+		ipropsapiCtrl.OnErrorEnable			= 0;
+		ipropsapiCtrl.OnDevStatusEnable		= 0;
+		ipropsapiCtrl.OnRecStatusEnable		= 0;
+		ipropsapiCtrl.OnPlayStatusEnable	= 0;
+		ipropsapiCtrl.OnImageRefreshEnable	= 0;
+		ipropsapiCtrl.OnRecordStatusEnable	= 0;
+		ipropsapiCtrl.OnOpStatusEnable		= 0;
+		ipropsapiCtrl.OnAlmStatusEnable		= 0;
+		
+		ipropsapiCtrl.OnRecStatusCBEnable	= 0;
+		ipropsapiCtrl.OnSearchCBEnable		= 0;
+		ipropsapiCtrl.OnSearchExCBEnable	= 0;
+		ipropsapiCtrl.OnPlayStatusCBEnable	= 0;
+		ipropsapiCtrl.OnOpStatusCBEnable	= 0;
+		ipropsapiCtrl.OnAlmStatusCBEnable	= 0;
+		ipropsapiCtrl.OnFtpStatusCBEnable	= 0;
+	}
+
+	/****************************************************************
+	* Function Name   : ShowResult
+	* Overview        : Output list Search result 
+	****************************************************************/
+	function ShowResult()
+	{
+		//Set Search Result to list
+		var strInfo = ipropsapiCtrl.SearchResult;
+
+		Startbuf = 0;
+		Endbuf = 0;
+		m_SearchRet.length = 0;
+		while(1){
+			
+			Endbuf = strInfo.indexOf("\r\n",Startbuf);
+			if(Startbuf == -1 || Startbuf >= strInfo.length){
+				break;
+			}
+
+			strRec = strInfo.substr(Startbuf,Endbuf-Startbuf+1);
+
+			//output format [No, ch, startTD, EndTd, Kind, Audio]
+			m_SearchRet.length++;
+			if(m_SearchRet.length < 10){
+				strRec = "0" + m_SearchRet.length + ", " + strRec;
+			}else{
+				strRec = "" + m_SearchRet.length + ", " + strRec;
+			}
+			Startbuf = Endbuf + 2;
+			
+			//output listbox
+			m_SearchRet.options[m_SearchRet.length-1].text = strRec;
+		}
+	}
+
+	/****************************************************************
+	* Function Name   : ShowResultEx
+	* Overview        : Output list SearchEx/VMDSearchEx result 
+	****************************************************************/
+	function ShowResultEx()
+	{
+		//Set Search Result to list
+		var strInfo = ipropsapiCtrl.SearchResultEx;
+
+		Startbuf = 0;
+		Endbuf = 0;
+		m_SearchRet.length = 0;
+		while(1){
+			
+			Endbuf = strInfo.indexOf("\r\n",Startbuf);
+			if(Startbuf == -1 || Startbuf >= strInfo.length){
+				break;
+			}
+
+			strRec = strInfo.substr(Startbuf,Endbuf-Startbuf+1);
+
+			//output format [No, ch, startTD, EndTd, Kind, Audio, Time zone, Time mode]
+			m_SearchRet.length++;
+			if(m_SearchRet.length < 10){
+				strRec = "0" + m_SearchRet.length + ", " + strRec;
+			}else{
+				strRec = "" + m_SearchRet.length + ", " + strRec;
+			}
+			Startbuf = Endbuf + 2;
+			
+			//output listbox
+			m_SearchRet.options[m_SearchRet.length-1].text = strRec;
+		}
+	}
+</SCRIPT>
+
+
+<!-- == SCRIPT ================================================================== -->
+<SCRIPT language="JavaScript">
+	/****************************************************************
+	 * Function			: Call_PlayStop
+	 * Outline			: 
+	****************************************************************/
+	function Call_PlayStop()
+	{
+		//-----------------------------------------------------
+		//Stop Play
+		//-----------------------------------------------------
+		if(g_lPlayStatus == 1){
+			lCommand = 0
+			lSpeed = 1
+			lBlockmode = 0
+			RetValue.value = ipropsapiCtrl.PlayControl(lCommand, lSpeed, lBlockmode);
+			ipropsapiCtrl.ClearImage();
+			g_lPlayStatus = 0;
+		}
+	}
+
+	/****************************************************************
+	 * Function			: Search_Sync
+	 * Outline			: 
+	 ***************************************************************/
+	function Search_Sync()
+	{
+		Call_PlayStop();
+
+		//-----------------------------------------------------
+		//Set properties
+		//-----------------------------------------------------
+		lChannel = eval( Channel.value );
+
+		//Set TimeDate
+		csStartTD = m_sYear.value + "/" + m_sMonth.value + "/" + m_sDay.value + " " + 
+				m_sHour.value + ":" + m_sMin.value + ":" + m_sSec.value;
+
+		//Set TimeDate
+		csEndTD = m_eYear.value + "/" + m_eMonth.value + "/" + m_eDay.value + " " + 
+				m_eHour.value + ":" + m_eMin.value + ":" + m_eSec.value;
+
+		//Set Type
+		lType = 0;
+		if(m_bType_EMR.checked) lType = lType | 1;
+		if(m_bType_MAN.checked) lType = lType | 2;
+		if(m_bType_SCH.checked) lType = lType | 4;
+		if(m_bType_TRM.checked) lType = lType | 8;
+		if(m_bType_COM.checked) lType = lType | 16;
+		if(m_bType_CAM.checked) lType = lType | 32;
+		if(m_bType_SD.checked)  lType = lType | 64;
+		if(m_bType_LOSS.checked)lType = lType | 128;
+		if(m_bType_VMD.checked) lType = lType | 256;
+		if(m_bType_CMTN.checked)lType = lType | 512;
+		if(m_bType_CSTY.checked)lType = lType | 1024;
+		if(m_bType_CRMV.checked)lType = lType | 2048;
+		if(m_bType_CSCD.checked)lType = lType | 4096;
+		if(m_bType_CTRM.checked)lType = lType | 8192;
+		if(m_bType_CDRT.checked)lType = lType | 16384;
+		if(m_bType_PRE.checked) lType = lType | 32768;
+
+		lBlockmode = 0;
+
+		//-----------------------------------------------------
+		//SearchEx
+		//-----------------------------------------------------
+		RetValue.value = ipropsapiCtrl.SearchEx(lChannel,csStartTD,csEndTD,lType,lBlockmode);
+
+		if(RetValue.value == 0){
+			//Success to SearchEx
+			ShowResultEx();
+		}
+
+	}
+	/****************************************************************
+	 * Function			: Search_ASync
+	 * Outline			: 
+	****************************************************************/
+	function Search_ASync()
+	{
+		Call_PlayStop();
+
+		//-----------------------------------------------------
+		//Set properties
+		//-----------------------------------------------------
+		lChannel = eval( Channel.value );
+
+		//Set TimeDate
+		csStartTD = m_sYear.value + "/" + m_sMonth.value + "/" + m_sDay.value + " " + 
+				m_sHour.value + ":" + m_sMin.value + ":" + m_sSec.value;
+
+		//Set TimeDate
+		csEndTD = m_eYear.value + "/" + m_eMonth.value + "/" + m_eDay.value + " " + 
+				m_eHour.value + ":" + m_eMin.value + ":" + m_eSec.value;
+
+		//Set Type
+		lType = 0;
+		if(m_bType_EMR.checked) lType = lType | 1;
+		if(m_bType_MAN.checked) lType = lType | 2;
+		if(m_bType_SCH.checked) lType = lType | 4;
+		if(m_bType_TRM.checked) lType = lType | 8;
+		if(m_bType_COM.checked) lType = lType | 16;
+		if(m_bType_CAM.checked) lType = lType | 32;
+		if(m_bType_SD.checked)  lType = lType | 64;
+		if(m_bType_LOSS.checked)lType = lType | 128;
+		if(m_bType_VMD.checked) lType = lType | 256;
+		if(m_bType_CMTN.checked)lType = lType | 512;
+		if(m_bType_CSTY.checked)lType = lType | 1024;
+		if(m_bType_CRMV.checked)lType = lType | 2048;
+		if(m_bType_CSCD.checked)lType = lType | 4096;
+		if(m_bType_CTRM.checked)lType = lType | 8192;
+		if(m_bType_CDRT.checked)lType = lType | 16384;
+		if(m_bType_PRE.checked) lType = lType | 32768;
+
+		lBlockmode = 1;
+
+		//-----------------------------------------------------
+		//SearchEx
+		//-----------------------------------------------------
+		RetValue.value = ipropsapiCtrl.SearchEx(lChannel,csStartTD,csEndTD,lType,lBlockmode);
+	}
+
+	/****************************************************************
+	 * Function			: Search_Cancel
+	 * Outline			: 
+	 ***************************************************************/
+	function Search_Cancel()
+	{
+		//-----------------------------------------------------
+		//SearchCancel
+		//-----------------------------------------------------
+		RetValue.value = ipropsapiCtrl.SearchCancel();
+	}
+
+	/****************************************************************
+	* Function Name        : DblclkSearchRet
+	* Overview             : play for search result
+	****************************************************************/
+	function DblclkSearchRet() 
+	{
+		//-----------------------------------------------------
+		//Define variables
+		//-----------------------------------------------------
+		lchannel=	0;
+		Startbuf=	0;
+		Nextbuf	=	0;
+		Endbuf	=	0;
+		var csListbuf = "";
+		csTimeDT = "";
+
+		//-----------------------------------------------------
+		//Stop Play
+		//-----------------------------------------------------
+		Call_PlayStop();
+
+		//-----------------------------------------------------
+		//Get listbox data
+		//-----------------------------------------------------
+		if(m_SearchRet.options[m_SearchRet.selectedIndex].text != ""){
+			csListbuf = m_SearchRet.options[m_SearchRet.selectedIndex].text;
+
+			//No, ch
+			Startbuf = csListbuf.indexOf(",", 0);
+			
+			//ch, startTD
+			Nextbuf = csListbuf.indexOf(",", Startbuf+2);
+			
+			//startTD, EndTD
+			Endbuf = csListbuf.indexOf(",", Nextbuf+1);
+
+			//get ch
+			lchannel = eval( csListbuf.substr(Startbuf+2, Nextbuf-(Startbuf+2)) );
+			
+			//get timedate
+			csTimeDT = csListbuf.substr(Nextbuf+1, Endbuf-(Nextbuf+1));
+
+			//-----------------------------------------------------
+			//Start Play
+			//-----------------------------------------------------
+			RetValue.value = ipropsapiCtrl.Play(lchannel, csTimeDT,	lBlockmode);
+
+			if ( RetValue.value == 0){
+				g_lPlayStatus = 1;
+			}
+		}
+	}
+</SCRIPT>
+</HEAD>
+
+
+<!-- == BODY ===================================================================== -->
+<BODY onLoad="Load()" onUnload="Unload()">
+
+<OBJECT ID="ipropsapiCtrl" CLASSID="CLSID:69ADBDBE-2035-4144-B52E-14753EB07CE9" width="320" height="240" VIEWASTEXT></OBJECT>
+
+<BR>
+<BR>
+
+<table>
+	<tr>
+		<td>
+			Ch:
+		</td>
+		<td>
+			<input type="text" id="Channel" name="Channel" size="10" value="1">
+		</td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td>
+			StartDate
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="m_sYear" name="m_sYear" size="10" value="2010">
+		</td>
+		<td>
+			/
+		</td>
+		<td>
+			<input type="text" id="m_sMonth" name="m_sMonth" size="5" value="07">
+		</td>
+		<td>
+			/
+		</td>
+		<td>
+			<input type="text" id="m_sDay" name="m_sDay" size="5" value="01">
+		</td>
+		<td></td><td></td><td></td>
+		<td>
+			<input type="text" id="m_sHour" name="m_sHour" size="5" value="00">
+		</td>
+		<td>
+			:
+		</td>
+		<td>
+			<input type="text" id="m_sMin" name="m_sMin" size="5" value="00">
+		</td>
+		<td>
+			:
+		</td>
+		<td>
+			<input type="text" id="m_sSec" name="m_sSec" size="5" value="00">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			EndDate
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="m_eYear" name="m_eYear" size="10" value="2010">
+		</td>
+		<td>
+			/
+		</td>
+		<td>
+			<input type="text" id="m_eMonth" name="m_eMonth" size="5" value="07">
+		</td>
+		<td>
+			/
+		</td>
+		<td>
+			<input type="text" id="m_eDay" name="m_eDay" size="5" value="01">
+		</td>
+		<td></td><td></td><td></td>
+		<td>
+			<input type="text" id="m_eHour" name="m_eHour" size="5" value="23">
+		</td>
+		<td>
+			:
+		</td>
+		<td>
+			<input type="text" id="m_eMin" name="m_eMin" size="5" value="59">
+		</td>
+		<td>
+			:
+		</td>
+		<td>
+			<input type="text" id="m_eSec" name="m_eSec" size="5" value="59">
+		</td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td>
+			<input type="checkbox" id="m_bType_EMR" name="m_bType_EMR">emergency
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_MAN" name="m_bType_MAN">manual
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_SCH" name="m_bType_SCH">schedule
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_TRM" name="m_bType_TRM">terminal
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="checkbox" id="m_bType_COM" name="m_bType_COM">command alarm
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_CAM" name="m_bType_CAM">camera site alarm
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_SD" name="m_bType_SD">SD backup
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_LOSS" name="m_bType_LOSS">video loss alarm
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="checkbox" id="m_bType_VMD" name="m_bType_VMD">VMD alarm
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_CMTN" name="m_bType_CMTN">Motion (i-VMD)
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_CSTY" name="m_bType_CSTY">Loitering (i-VMD)
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_CRMV" name="m_bType_CRMV">Removal (i-VMD)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="checkbox" id="m_bType_CSCD" name="m_bType_CSCD">Scene change (i-VMD)
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_CTRM" name="m_bType_CTRM">Terminal (i-VMD)
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_CDRT" name="m_bType_CDRT">Direction (i-VMD)
+		</td>
+		<td>
+			<input type="checkbox" id="m_bType_PRE" name="m_bType_PRE">pre recording
+		</td>
+	</tr>
+</table>
+
+<BR>
+
+<INPUT id="btnSearch_Sync" type="button" value="SearchEx(Sync Mode)" name="btnSearch_Sync" onClick="Search_Sync()">
+<INPUT id="btnSearch_ASync" type="button" value="SearchEx(ASync Mode)" name="btnSearch_ASync"  onClick="Search_ASync()">
+<INPUT id="btnSearch_Cancel" type="button" value="SearchCancel" name="btnSearch_Cancel"  onClick="Search_Cancel()">
+
+<BR>
+<BR>
+
+<SELECT size="30" name="m_SearchRet" id="m_SearchRet" style="width:70%;" ondblclick="DblclkSearchRet()"></SELECT>
+
+<BR>
+<BR>
+
+<table>
+	<tr>
+		<td>
+			Return Value:
+		</td>
+		<td>
+			<input type="text" id="RetValue" name="RetValue" size="25" value="-1">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Event:
+		</td>
+		<td>
+		<textarea type="text" id="EventLog" name="EventLog" rows="20" cols="80%" wrap="hard" value=""></textarea>
+		</td>
+	</tr>
+</table>
+
+
+<!-- == EVENT ==================================================================== -->
+<SCRIPT language="JavaScript">
+	/****************************************************************
+	* Function Name        : OnError
+	* Overview             : OnError listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnError(errorCode, description)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnError] errorCode[" + errorCode + "] description["+ description + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnDevStatus
+	* Overview             : OnDevStatus listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnDevStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnDevStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecStatus
+	* Overview             : OnRecStatus listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnRecStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnPlayStatus
+	* Overview             : OnPlayStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnPlayStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnPlayStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecordStatus
+	* Overview             : OnRecordStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnRecordStatus(rectype, timeDate, nextRecTime)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecordStatus] type[" + rectype + "] timeDate["+ timeDate + "] nextRecTime["+ nextRecTime + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnImageRefresh
+	* Overview             : OnImageRefresh listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnImageRefresh()
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnImageRefresh] No argument."
+	}
+	/****************************************************************
+	* Function Name        : OnOpStatus
+	* Overview             : OnOpStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnOpStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnOpStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnAlmStatus
+	* Overview             : OnAlmStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnAlmStatus(channel, almtype, timeDate, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnAlmStatus] channel["+ channel + "] type[" + almtype + "] timeDate["+ timeDate + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecStatusCB
+	* Overview             : OnRecStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnRecStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnSearchCB
+	* Overview             : OnSearchCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnSearchCB()
+	{
+		ShowResult();
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnSearchCB] Show Search result."
+	}
+	/****************************************************************
+	* Function Name        : OnSearchExCB
+	* Overview             : OnSearchExCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnSearchExCB()
+	{
+		ShowResultEx();
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnSearchExCB] Show Search result."
+	}
+	/****************************************************************
+	* Function Name        : OnPlayStatusCB
+	* Overview             : OnPlayStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnPlayStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnPlayStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnOpStatusCB
+	* Overview             : OnOpStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnOpStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnOpStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnAlmStatusCB
+	* Overview             : OnAlmStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnAlmStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnAlmStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnFtpStatusCB
+	* Overview             : OnFtpStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnFtpStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnFtpStatusCB] status["+ status + "]"
+	}
+</SCRIPT>
+</BODY>
+</HTML>

@@ -1,0 +1,487 @@
+<!-- (C) Panasonic i-PRO Sensing Solutions Co., Ltd. 2020 -->
+
+<HTML>
+<HEAD>
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>ActiveX_PSAPI_SimpleSample_Overlay</TITLE>
+<!-- == SCRIPT ================================================================== -->
+<SCRIPT type="text/javascript">
+<!--
+	/****************************************************************
+	* Difinition
+	****************************************************************/
+	var PlayStatus = 0;
+
+	/****************************************************************
+	* Function Name        : Load
+	* Overview             : Set properties
+	****************************************************************/
+	function Load()
+	{
+		//Set properties to connect the device
+		ipropsapiCtrl.IPAddr		= "192.168.0.10";
+		ipropsapiCtrl.DeviceType	= 2;
+		ipropsapiCtrl.HttpPort		= 80;
+		ipropsapiCtrl.UserName		= "admin";
+		ipropsapiCtrl.Password		= "12345";
+		
+		//Set properties for display area
+		ipropsapiCtrl.StreamFormat		= 0;
+		ipropsapiCtrl.JPEGResolution	= 640;
+		ipropsapiCtrl.MPEG4Resolution	= 640;
+		ipropsapiCtrl.H264Resolution	= 640;
+		
+		//Set properties for event
+		ipropsapiCtrl.OnErrorEnable			= 1;
+		ipropsapiCtrl.OnDevStatusEnable		= 0;
+		ipropsapiCtrl.OnRecStatusEnable		= 0;
+		ipropsapiCtrl.OnPlayStatusEnable	= 1;
+		ipropsapiCtrl.OnImageRefreshEnable	= 0;
+		ipropsapiCtrl.OnRecordStatusEnable	= 0;
+		ipropsapiCtrl.OnOpStatusEnable		= 0;
+		ipropsapiCtrl.OnAlmStatusEnable		= 0;
+		
+		ipropsapiCtrl.OnRecStatusCBEnable	= 0;
+		ipropsapiCtrl.OnSearchCBEnable		= 0;
+		ipropsapiCtrl.OnSearchExCBEnable	= 0;
+		ipropsapiCtrl.OnPlayStatusCBEnable	= 0;
+		ipropsapiCtrl.OnOpStatusCBEnable	= 0;
+		ipropsapiCtrl.OnAlmStatusCBEnable	= 0;
+		ipropsapiCtrl.OnFtpStatusCBEnable	= 0;
+		
+		// Clean Log Area		Added Ver5.0.1.0
+		document.getElementById("EventLog").value = "";
+		document.getElementById("RetValue").value = "";
+		document.getElementById("TransFile").value = "C:\\temp\\test.bmp";
+
+		RetValue.value = ipropsapiCtrl.Open();
+		
+		lChannel = 1;
+		lBlockmode = 0;
+
+		//Setup to StartLive
+		lChannel = 1;
+		lBlockmode = 0;
+		if(RetValue.value > -1){
+			RetValue.value = ipropsapiCtrl.PlayLive(lChannel, lBlockmode)
+			if(RetValue.value > -1){
+				PlayStatus = 1;
+			}
+		}
+		else{
+			return ;
+		}
+
+	}
+	
+	/****************************************************************
+	* Function Name        : Unload
+	* Overview             : 
+	****************************************************************/
+	function Unload()
+	{
+		if(PlayStatus == 1){
+			//Stop Live
+			lCommand = 1;
+			lSpeed = 1;
+			lBlockmode = 0;
+			RetValue.value = ipropsapiCtrl.PlayControl(lCommand, lSpeed, lBlockmode);
+
+			//Close connection to the device
+			ipropsapiCtrl.Close();
+
+			//Clear Image
+			ipropsapiCtrl.ClearImage();
+		}
+
+		//Set properties for event
+		ipropsapiCtrl.OnErrorEnable			= 0;
+		ipropsapiCtrl.OnDevStatusEnable		= 0;
+		ipropsapiCtrl.OnRecStatusEnable		= 0;
+		ipropsapiCtrl.OnPlayStatusEnable	= 0;
+		ipropsapiCtrl.OnImageRefreshEnable	= 0;
+		ipropsapiCtrl.OnRecordStatusEnable	= 0;
+		ipropsapiCtrl.OnOpStatusEnable		= 0;
+		ipropsapiCtrl.OnAlmStatusEnable		= 0;
+		
+		ipropsapiCtrl.OnRecStatusCBEnable	= 0;
+		ipropsapiCtrl.OnSearchCBEnable		= 0;
+		ipropsapiCtrl.OnSearchExCBEnable	= 0;
+		ipropsapiCtrl.OnPlayStatusCBEnable	= 0;
+		ipropsapiCtrl.OnOpStatusCBEnable	= 0;
+		ipropsapiCtrl.OnAlmStatusCBEnable	= 0;
+		ipropsapiCtrl.OnFtpStatusCBEnable	= 0;
+	}
+
+	/****************************************************************
+	* Function Name   : ShowResult
+	* Overview        : Output list Search result 
+	****************************************************************/
+	function ShowResult()
+	{
+		//Set Search Result to list
+	}
+
+	/****************************************************************
+	* Function Name   : ShowResultEx
+	* Overview        : Output list SearchEx/VMDSearchEx result 
+	****************************************************************/
+	function ShowResultEx()
+	{
+		//Set Search Result to list
+	}
+-->
+</SCRIPT>
+
+
+<!-- == SCRIPT ================================================================== -->
+<SCRIPT type="text/javascript">
+<!--
+	/****************************************************************
+	* Function Name        : DrawTitle						Modefied Ver5.0.1.0
+	* Overview             : Draw Title
+	****************************************************************/
+	function DrawTitle()
+	{
+		strText = "PS-API ActiveX";
+		lxPosition = 100;
+		lyPosition = 100;
+		lAlign = 0;
+		strFont = "MS UI Gothic";
+		lFontSize = 24;
+		lForeColor = 0;
+		lBorderColor = 16777215;
+		lStyle = 2;
+		lTrans = 0x7F;
+
+		if(drawTitle.checked){
+			//Display Title
+			lId = 1;
+			lCommand = 1;
+			Ret = ipropsapiCtrl.TitleOperationEx(lId, lCommand, strText, lxPosition, lyPosition, lAlign, strFont, lFontSize, lForeColor, lBorderColor, lStyle, lTrans);
+			document.getElementById("RetValue").value = Ret.toString();
+			Logging("[Function] TitleOperation (ON):" + Ret.toString());
+		}
+		else{
+			//Not display Title
+			lId = 1;
+			lCommand = 0;
+			Ret = ipropsapiCtrl.TitleOperationEx(lId, lCommand, strText, lxPosition, lyPosition, lAlign, strFont, lFontSize, lForeColor, lBorderColor, lStyle, lTrans);
+			document.getElementById("RetValue").value = Ret.toString();
+			Logging("[Function] TitleOperation (OFF):" + Ret.toString());
+		}
+	}
+
+	/****************************************************************
+	* Function Name        : DrawBox						Modefied Ver5.0.1.0
+	* Overview             : Draw Box
+	****************************************************************/
+	function DrawBox()
+	{
+		lColor = 255;
+		lSize = 3;
+		lxTopLeft = 200;
+		lyTopLeft = 200;
+		lxBottomRight = 300;
+		lyBottomRight = 300;
+		lTrans = 0x7F;
+		
+		if(drawBox.checked){
+			//Display Box
+			lId = 1;
+			lCommand = 2;
+			Ret = ipropsapiCtrl.BoxOperationEx(lId, lCommand, lColor, lSize, lxTopLeft, lyTopLeft, lxBottomRight, lyBottomRight, lTrans);
+			document.getElementById("RetValue").value = Ret.toString();
+			Logging("[Function] BoxOperation (ON):" + Ret.toString());
+		}
+		else{
+			//Not display Box
+			lId = 1;
+			lCommand = 0;
+			Ret = ipropsapiCtrl.BoxOperationEx(lId, lCommand, lColor, lSize, lxTopLeft, lyTopLeft, lxBottomRight, lyBottomRight, lTrans);
+			document.getElementById("RetValue").value = Ret.toString();
+			Logging("[Function] BoxOperation (OFF):" + Ret.toString());
+		}
+	}
+	/****************************************************************
+	* Function Name        : BMPDraw						Added Ver5.0.1.0
+	* Overview             : Transparent bitmap image processing
+	****************************************************************/
+	function BMPDraw()
+	{
+		Id = 1;		// ID for management
+		XPos = 320;	// X position of displayed transparent
+		YPos = 240;	// Y position of displayed transparent
+		if (document.getElementById("BmpDraw").checked) {
+			// Transparent bitmap
+			FileName = document.getElementById("TransFile").value;
+			Command = 1;			// Bitmap display
+			MaskColor = 0xFF00FF;	// bitmap's masked color
+			Trans = 0x7F;			// Transmittance
+			Ret = ipropsapiCtrl.BitmapOperationEx(Id, Command, FileName, XPos, YPos, MaskColor, Trans);
+			document.getElementById("RetValue").value = Ret.toString();
+			Logging("[Function] BitmapOperationEx (ON," + FileName + "):" + Ret.toString());
+		}
+		else {
+			// Not transparent bitmap
+			FileName = "";
+			Command = 0;			// Bitmap non display
+			MaskColor = 0x00;		// Bitmap's masked color
+			Trans = 0x7F;			// Transmittance
+			Ret = ipropsapiCtrl.BitmapOperationEx(Id, Command, FileName, 0, 0, MaskColor, Trans);
+			document.getElementById("RetValue").value = Ret.toString();
+			Logging("[Function] BitmapOperationEx (OFF):" + Ret.toString());
+		}
+	}
+/****************************************************************
+ * Function			: Logging							Added Ver5.0.1.0
+ * Outline			: 
+****************************************************************/
+function Logging(strLog)
+{
+	//*****************************************************
+	// Imprementation to add item to list
+	//*****************************************************
+	var strBuf = document.getElementById("EventLog").value ;
+	if ( strBuf != ""){
+		strBuf = strBuf + "\n";
+	}
+	document.getElementById("EventLog").value = strBuf + strLog;
+}
+-->
+</SCRIPT>
+</HEAD>
+
+
+<!-- == BODY ===================================================================== -->
+<BODY onLoad="Load()" onUnload="Unload()">
+
+<OBJECT ID="ipropsapiCtrl" CLASSID="clsid:69ADBDBE-2035-4144-B52E-14753EB07CE9" width="640" height="480">PS-API ActiveX</OBJECT>
+<BR>
+<BR>
+<table Summary="Table for display control">
+	<TR><TD>
+	<input type="checkbox" id="drawTitle" name="drawTitle" onClick="DrawTitle()" value="">Draw Title
+	</TD></TR>
+	<TR><TD>
+	<input type="checkbox" id="drawBox" name="drawBox" onClick="DrawBox()" value="">Draw Box
+	</TD></TR>
+	<TR><TD>
+	<input type="checkbox" id="BmpDraw" name="BmpDraw" onClick="BMPDraw()" value="">Image Transmission
+	</TD>
+	<TD>
+	<input type="text" id="TransFile" name="TransFile" size="85" value="C:\temp\test.bmp">
+	</TD></TR>
+</table>
+<BR>
+<table Summary="Main table of the API logging">
+	<tr>
+		<td>
+			Return Value:
+		</td>
+		<td>
+			<input type="text" id="RetValue" name="RetValue" size="25" value="-1">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Event:
+		</td>
+		<td>
+		<textarea id="EventLog" name="EventLog" rows="20" cols="70">Log Area</textarea>
+		</td>
+	</tr>
+</table>
+
+
+<!-- == EVENT ==================================================================== -->
+<SCRIPT type="text/javascript">
+<!--
+	/****************************************************************
+	* Function Name        : OnError
+	* Overview             : OnError listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnError(errorCode, description)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnError] errorCode[" + errorCode + "] description["+ description + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnDevStatus
+	* Overview             : OnDevStatus listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnDevStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnDevStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecStatus
+	* Overview             : OnRecStatus listener event
+	****************************************************************/
+	function ipropsapiCtrl::OnRecStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnPlayStatus
+	* Overview             : OnPlayStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnPlayStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnPlayStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecordStatus
+	* Overview             : OnRecordStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnRecordStatus(rectype, timeDate, nextRecTime)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecordStatus] type[" + rectype + "] timeDate["+ timeDate + "] nextRecTime["+ nextRecTime + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnImageRefresh
+	* Overview             : OnImageRefresh listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnImageRefresh()
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnImageRefresh] No argument."
+	}
+	/****************************************************************
+	* Function Name        : OnOpStatus
+	* Overview             : OnOpStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnOpStatus(channel, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnOpStatus] channel[" + channel + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnAlmStatus
+	* Overview             : OnAlmStatus listener event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnAlmStatus(channel, almtype, timeDate, status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnAlmStatus] channel["+ channel + "] type[" + almtype + "] timeDate["+ timeDate + "] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnRecStatusCB
+	* Overview             : OnRecStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnRecStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnRecStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnSearchCB
+	* Overview             : OnSearchCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnSearchCB()
+	{
+		ShowResult();
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnSearchCB] Show Search result."
+	}
+	/****************************************************************
+	* Function Name        : OnSearchExCB
+	* Overview             : OnSearchExCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnSearchExCB()
+	{
+		ShowResultEx();
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnSearchExCB] Show Search result."
+	}
+	/****************************************************************
+	* Function Name        : OnPlayStatusCB
+	* Overview             : OnPlayStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnPlayStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnPlayStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnOpStatusCB
+	* Overview             : OnOpStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnOpStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnOpStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnAlmStatusCB
+	* Overview             : OnAlmStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnAlmStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnAlmStatusCB] status["+ status + "]"
+	}
+	/****************************************************************
+	* Function Name        : OnFtpStatusCB
+	* Overview             : OnFtpStatusCB callback event
+	 ****************************************************************/
+	function ipropsapiCtrl::OnFtpStatusCB(status)
+	{
+		strLog = EventLog.value
+		if ( strLog != ""){
+			strLog = strLog + "\n"
+		}
+		EventLog.value = strLog + "[OnFtpStatusCB] status["+ status + "]"
+	}
+-->
+</SCRIPT>
+</BODY>
+</HTML>

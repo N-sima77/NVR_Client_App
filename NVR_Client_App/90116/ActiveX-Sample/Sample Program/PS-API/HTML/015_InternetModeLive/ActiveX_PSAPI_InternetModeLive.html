@@ -1,0 +1,247 @@
+<!-- (C) Panasonic i-PRO Sensing Solutions Co., Ltd. 2020 -->
+
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>ActiveX_PSAPI_InternetModeLive</TITLE>
+<SCRIPT type="text/javascript">
+<!--
+/****************************************************************
+* Definition
+****************************************************************/
+var m_PlayStatus;
+var constStart = 0;
+var constLive = 1;
+/****************************************************************
+ * Function			: Load
+ * Outline			: 
+ ****************************************************************/
+function Load()
+{
+	confirm("Please confirm beforehand that the internet mode of a target device is turned ON.");
+
+	m_PlayStatus = constStart;
+
+	//*****************************************************
+	// Set properties (ActiveX)
+	//*****************************************************
+	// Set properties to connect the device
+	ipropsapiCtrl.IPAddr = "192.168.0.10";
+	ipropsapiCtrl.DeviceType = 2;
+	ipropsapiCtrl.HttpPort = 80;
+	ipropsapiCtrl.UserName = "admin";
+	ipropsapiCtrl.Password = "admin12345";
+	
+	// Set properties for event
+	ipropsapiCtrl.OnErrorEnable = 1;
+	ipropsapiCtrl.OnDevStatusEnable = 0;
+	ipropsapiCtrl.OnRecStatusEnable = 0;
+	ipropsapiCtrl.OnPlayStatusEnable = 1;
+	ipropsapiCtrl.OnImageRefreshEnable = 0;
+	ipropsapiCtrl.OnRecordStatusEnable = 0;
+	ipropsapiCtrl.OnOpStatusEnable = 0;
+	ipropsapiCtrl.OnAlmStatusEnable = 0;
+	ipropsapiCtrl.OnRecStatusCBEnable = 0;
+	ipropsapiCtrl.OnSearchCBEnable = 0;
+	ipropsapiCtrl.OnSearchExCBEnable = 0;
+	ipropsapiCtrl.OnPlayStatusCBEnable = 0;
+	ipropsapiCtrl.OnOpStatusCBEnable = 0;
+	ipropsapiCtrl.OnAlmStatusCBEnable = 0;
+	ipropsapiCtrl.OnFtpStatusCBEnable = 0;
+	
+	// Set Initial status
+	ipropsapiCtrl.StreamFormat = 3;		// H.264
+	ipropsapiCtrl.JPEGResolution = 640;
+	ipropsapiCtrl.MPEG4Resolution = 640;
+	ipropsapiCtrl.H264Resolution = 640;
+	ipropsapiCtrl.PictureFitMode = 0;
+
+	ipropsapiCtrl.ClearImage();
+
+	// Connect to device
+	ipropsapiCtrl.Open();
+
+
+	//*****************************************************
+	//Set parameters (Others)
+	//*****************************************************
+	document.getElementById("RetValue").value = "";
+	document.getElementById("EventLog").value = "";
+	
+}
+
+/****************************************************************
+ * Function			: UnLoad
+ * Outline			: 
+ ****************************************************************/
+function UnLoad()
+{
+	// Check the play status
+	if (m_PlayStatus == constLive) {
+		OnClickedLiveEnd();
+	}
+
+	//*****************************************************
+	// Set properties (ActiveX)
+	//*****************************************************
+	// Close connecntion to the device
+	ipropsapiCtrl.Close();
+	Logging("[Funcion] Close");
+
+	// Set properties for event
+	ipropsapiCtrl.OnErrorEnable = 0;
+	ipropsapiCtrl.OnPlayStatusEnable = 0;
+}
+
+/****************************************************************
+ * Function			: OnClickedLiveStart
+ * Outline			: Start live video play
+ ****************************************************************/
+function OnClickedLiveStart()
+{
+	var Ret, Channel, Blockmode;
+
+	// Check the play status
+	if (m_PlayStatus == constStart) {
+		// Start Live
+		Channel = 1;	// Network camera
+		Blockmode = 0;	// Blocking
+		Ret = ipropsapiCtrl.Playlive(Channel, Blockmode);
+		Logging("[Function] PlayLive(Start):" + Ret.toString());
+		if (Ret == 0) {
+			m_PlayStatus = constLive;
+		}
+		else {
+			ipropsapiCtrl.Close();
+		}
+	}
+	else {
+		Logging("[Message] In the live.");
+	}
+}
+
+/****************************************************************
+ * Function			: OnClickedLiveEnd
+ * Outline			: Stop live video play
+ ****************************************************************/
+function OnClickedLiveEnd()
+{
+	var Ret, Command, Speed, Blockmode;
+	
+	// Check the play status
+    if (m_PlayStatus == constLive) {
+        // Stop Live
+        Command = 1;         // Stop live
+        Speed = 1;           // Step 1
+        Blockmode = 0;       // Blocking
+        Ret = ipropsapiCtrl.PlayControl(Command, Speed, Blockmode);
+        Logging("[Function] PlayLive(Stop):" + Ret.toString());
+        //Clear Image;
+        ipropsapiCtrl.ClearImage();
+        m_PlayStatus = constStart;
+    }
+    else {
+        Logging("[Message] No live.");
+    }
+}
+
+/****************************************************************
+ * Function			: OnClickedInternetMode
+ * Outline			: Change InternetMode
+ ****************************************************************/
+function OnClickedInternetMode()
+{
+	var Ret, Channel, Command;
+
+	// Check the play status
+	if (m_PlayStatus == constStart) {
+		Channel = 1;	// Network Camera
+		if (!isFinite(parseInt(document.getElementById("ModeValue").value, 10))) return;
+		Command = parseInt(document.getElementById("ModeValue").value, 10);
+		if (Command != 0 && Command != 1) return;
+		Ret = ipropsapiCtrl.SetInternetModeCam(Channel, Command,
+							ipropsapiCtrl.StreamFormat, ipropsapiCtrl.StreamNumber);
+		Logging("[Function] SetInternetModeCam(SetMode=" + Command.toString() + "):" + Ret.toString());
+		ipropsapiCtrl.InternetMode = Command;
+		Logging("[Property] InternetMode:" + ipropsapiCtrl.InternetMode.toString());
+	}
+	else {
+		Logging("[Message] In the live.");
+	}
+}
+
+/****************************************************************
+ * Function			: Logging
+ * Outline			: 
+****************************************************************/
+function Logging(strLog)
+{
+	//*****************************************************
+	// Imprementation to add item to list
+	//*****************************************************
+	var strBuf = document.getElementById("EventLog").value ;
+	if ( strBuf != ""){
+		strBuf = strBuf + "\n";
+	}
+	document.getElementById("EventLog").value = strBuf + strLog;
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<!-- ====== BODY ====== -->
+<BODY onload="Load()" onUnload="UnLoad()">
+<OBJECT ID="ipropsapiCtrl" CLASSID="clsid:69ADBDBE-2035-4144-B52E-14753EB07CE9" width="640" height="480">PS-API ActiveX</OBJECT>
+<BR><BR>
+<TABLE Summary="Table for display control 1">
+	<TR>
+	<TD><input id="btnLiveStart" type="button" value="Live Start" name="LiveStart" onClick="OnClickedLiveStart()"></TD>
+	<TD><input id="btnLiveEnd" type="button" value="Live End" name="LiveEnd" onClick="OnClickedLiveEnd()"></TD>
+	</TR>
+</TABLE>
+<TABLE Summary="Table for display control 2">
+	<TR>
+	<TD><input id="btnInternetMode" type="button" value="Set InternetMode" name="InternetMode" onClick="OnClickedInternetMode()"></TD>
+	<TD><INPUT id="ModeValue" type="text" name="ModeValue" size="1" value="1"></TD>
+	</TR>
+</TABLE>
+<BR>
+<TABLE Summary="Main table of the API logging">
+	<TR><TD>Ret value :
+	   </TD>
+	   <TD><input type="text" id="RetValue" name="RetValue" size="15" value="-1">
+	   </TD>
+	</TR>
+	<TR><TD>List :
+	   </TD>
+	   <TD><TEXTAREA id="EventLog" name="EventLog" rows="20" cols="70">Log Area</TEXTAREA>
+	   </TD>
+       </TR>
+</TABLE>
+<SCRIPT type="text/javascript">
+<!--
+/****************************************************************
+* Function Name        : OnError
+* Overview             : OnError listener event
+****************************************************************/
+function ipropsapiCtrl::OnError(errorCode, description)
+{
+	// Output Logs
+	Logging("[OnError] errorCode[" + errorCode.toString() + "] description["+ description.toString() + "]");
+}
+/****************************************************************
+* Function Name        : OnPlayStatus
+* Overview             : OnPlayStatus listener event
+****************************************************************/
+function ipropsapiCtrl::OnPlayStatus(channel, status)
+{
+	// Output Logs
+	Logging("[OnPlayStatus] channel[" + channel.toString() + "] status["+ status.toString() + "]");
+}
+-->
+</SCRIPT>
+</BODY>
+</HTML>
+

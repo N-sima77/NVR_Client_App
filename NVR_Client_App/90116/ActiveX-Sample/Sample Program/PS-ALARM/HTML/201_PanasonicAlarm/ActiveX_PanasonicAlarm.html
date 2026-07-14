@@ -1,0 +1,140 @@
+<!-- (C) Panasonic i-PRO Sensing Solutions Co., Ltd. 2020 -->
+
+<HTML>
+<HEAD>
+<TITLE>ActiveX_PanasonicAlarm</TITLE>
+<SCRIPT language="JavaScript">
+
+/****************************************************************
+ * Function			: onLoad
+ * Outline			: 
+ ****************************************************************/
+function onLoad()
+{
+	//-----------------------------------------------------
+	// HTML load
+	//-----------------------------------------------------
+	psalarmrcvctrl.AlarmRcvPort = 1818;
+	psalarmrcvctrl.OnErrorEnable = 1;
+	
+	// Display AlarmRcvPort number
+	m_Port.value = psalarmrcvctrl.AlarmRcvPort;
+}
+
+/****************************************************************
+ * Function			: UnLoad
+ * Outline			: 
+ ****************************************************************/
+function UnLoad()
+{
+	//-----------------------------------------------------
+	// HTML unload
+	//-----------------------------------------------------
+	psalarmrcvctrl.OnErrorEnable = 0;
+	psalarmrcvctrl.OnAlarmRcvEnable = 0;
+	
+	m_AlarmList.length = 0;
+}
+
+/****************************************************************
+ * Function			: Start
+ * Outline			: 
+ ***************************************************************/
+function Start()
+{
+	//-----------------------------------------------------
+	// Turn on OnAlarmRcv event
+	//-----------------------------------------------------
+	psalarmrcvctrl.OnAlarmRcvEnable = 1;
+}
+
+/****************************************************************
+ * Function			: Stop
+ * Outline			: 
+****************************************************************/
+function Stop()
+{
+	//-----------------------------------------------------
+	// Turn off OnAlarmRcv event
+	//-----------------------------------------------------
+	psalarmrcvctrl.OnAlarmRcvEnable = 0;
+}
+
+/****************************************************************
+ * Function			: AddList
+ * Outline			: 
+****************************************************************/
+function AddList(strAlarm)
+{
+	//-----------------------------------------------------
+	// Imprementation to add item to list
+	//-----------------------------------------------------
+	m_AlarmList.length = m_AlarmList.length + 1; 
+	m_AlarmList.options[m_AlarmList.length-1].text = strAlarm;
+	
+}
+
+/****************************************************************
+* Function Name        : DblclkAlarmList
+* Overview             : Display alart box
+****************************************************************/
+function DblclkAlarmList() 
+{
+	var strDisp;
+	strDisp = m_AlarmList.options[m_AlarmList.selectedIndex].text
+	alert(strDisp);
+}
+
+
+</SCRIPT>
+</HEAD>
+
+<BODY onload="onLoad()">
+<OBJECT ID="psalarmrcvctrl" CLASSID="CLSID:C83DFB39-AF0A-4368-9123-89201FE07AB4" width="0" height="0" VIEWASTEXT></OBJECT>
+<BR>
+<table>
+	<tr>
+		<td>
+			AlarmRcvPort<input type="text" id="m_Port" name="m_Port" size="5" readonly>
+		</td>
+	</tr>
+</table>
+<BR>
+<INPUT id="btnStart" type="button" value="Start" name="btnStart" onClick="Start()">
+<INPUT id="btnStop" type="button" value="Stop" name="btnStop"  onClick="Stop()">
+<BR>
+<BR>
+<SELECT size="30" name="m_AlarmList" id="m_AlarmList" style="width:70%;" ondblclick="DblclkAlarmList()">
+</SELECT>
+
+<SCRIPT language="JavaScript">
+//Event
+/****************************************************************
+* Function Name        : OnError
+* Overview             : OnError listener event
+****************************************************************/
+function psalarmrcvctrl::OnError(errorCode,description)
+{
+	alert("errorCode [" + errorCode + "]  \n" + "description [" + description + "]");
+}
+
+/****************************************************************
+* Function Name        : OnAlarmRcv
+* Overview             : OnAlarmRcv listener event
+ ****************************************************************/
+function psalarmrcvctrl::OnAlarmRcv(timeDate, ipaddr, channel, alarmType, messageID, messageText, information)
+{
+	    var strAlarm = "";
+	    var strInfo = "";
+	    
+		// Change return code in information from "\r\n" to "\n"
+	    strInfo = information.replace(/\r/g, "");
+
+		// Add item to list box
+	    strAlarm = "timeDate [" + timeDate + "]  \n" + "ipaddr [" + ipaddr + "]  \n" + "channel [" + channel + "]  \n" + "alarmType [" + alarmType + "]  \n" + "messageID [" + messageID + "]  \n" + "messageText [" + messageText + "]  \n" + "information\n" + "----------------\n" + strInfo + "\n" ;
+		AddList(strAlarm);
+}
+
+</SCRIPT>
+</BODY  onload="UnLoad()">
+</HTML>
