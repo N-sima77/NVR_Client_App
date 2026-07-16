@@ -36,17 +36,18 @@ namespace SimpleSample_Live
             //Set properties
             //----------------------------------------
             //Set properties to connect the device
-            axipropsapiCtrl1.IPAddr = "192.168.0.10";
-            axipropsapiCtrl1.DeviceType = 2;
+            axipropsapiCtrl1.IPAddr = "192.168.11.38";
+            axipropsapiCtrl1.DeviceType = 6;
             axipropsapiCtrl1.HttpPort = 80;
             axipropsapiCtrl1.UserName = "admin";
-            axipropsapiCtrl1.Password = "12345";
+            axipropsapiCtrl1.Password = "Admin123";
 
             //Set properties for display area
             axipropsapiCtrl1.StreamFormat = 0;
-            axipropsapiCtrl1.JPEGResolution = 640;
-            axipropsapiCtrl1.MPEG4Resolution = 640;
-            axipropsapiCtrl1.H264Resolution = 640;
+            axipropsapiCtrl1.JPEGResolution = 1280;
+            axipropsapiCtrl1.MPEG4Resolution = 720;
+            axipropsapiCtrl1.H264Resolution = 1280;
+            axipropsapiCtrl1.SetInternetMode(1);
 
             //Set properties for event
             axipropsapiCtrl1.OnErrorEnable = 1;
@@ -379,5 +380,6 @@ namespace SimpleSample_Live
             //Output Logs
             Logging("[OnFtpStatusCB] status[" + e.status + "]");
         }
+
     }
 }

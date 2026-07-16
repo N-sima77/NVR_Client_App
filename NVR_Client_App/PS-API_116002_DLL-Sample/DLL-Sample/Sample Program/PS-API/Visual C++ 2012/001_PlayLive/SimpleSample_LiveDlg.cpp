@@ -129,11 +129,11 @@ BOOL CSimpleSample_LiveDlg::OnInitDialog()
     m_psapi->SetImageHeight(480);           //Imgae Height
 
     //Set properties for image format
-    m_psapi->SetStreamFormat(6);        //Image format - JPEG:0,MPEG4:1
+    m_psapi->SetStreamFormat(3);        //Image format - JPEG:0,MPEG4:1
     //m_psapi->SetJPEGResolution(640);    //JPEG Resolution(It works in case of StreamFormat=0)
     //m_psapi->SetMPEG4Resolution(360);   //MPEG-4 Resolution(It works in case of StreamFormat=1)
     //m_psapi->SetH264Resolution(640);    //H.264 Resolution(It works in case of StreamFormat=3)
-	m_psapi->SetInternetMode(1);
+	m_psapi->SetInternetMode(1);          // Ağ duvarı yerine TCP / HTTP tüneliyle bağlan
 	//-----------------------------------------------------
 	//Set Listener
 	//-----------------------------------------------------
@@ -248,7 +248,7 @@ void CSimpleSample_LiveDlg::LiveStart()
 	long lRet = 0;
 	long lStatus = 0;
 	long lBlocking = 0;
-	long lNVRChannel = 1;  // NVR'da izlemek istediğiniz kamera (2. Kanal)
+	long lNVRChannel = 4;  // NVR'da izlemek istediğiniz kamera (2. Kanal)
 
 	// Video window güncelle
 	/*CWnd* pTuval = GetDlgItem(IDC_VIDEO_RENDER);
