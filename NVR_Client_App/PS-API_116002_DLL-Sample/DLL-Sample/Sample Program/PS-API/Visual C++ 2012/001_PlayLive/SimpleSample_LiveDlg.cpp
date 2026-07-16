@@ -105,8 +105,8 @@ BOOL CSimpleSample_LiveDlg::OnInitDialog()
     //Set properties
     //-----------------------------------------------------
     //Set properties to connect the device
-    m_psapi->SetIPAddr("192.168.11.114"); //IP address of the device
-    m_psapi->SetDeviceType(2);          //Device type:0-3
+    m_psapi->SetIPAddr("192.168.11.38"); //IP address of the device
+    m_psapi->SetDeviceType(6);          //Device type:0-3
     m_psapi->SetHttpPort(80);           //Port:0-65535
     m_psapi->SetUserName("admin");      //User name to access the device
     m_psapi->SetPassword("Admin123");      //Password tSo access the device
@@ -129,11 +129,11 @@ BOOL CSimpleSample_LiveDlg::OnInitDialog()
     m_psapi->SetImageHeight(480);           //Imgae Height
 
     //Set properties for image format
-    m_psapi->SetStreamFormat(0);        //Image format - JPEG:0,MPEG4:1
-    m_psapi->SetJPEGResolution(1920);    //JPEG Resolution(It works in case of StreamFormat=0)
-    m_psapi->SetMPEG4Resolution(1080);   //MPEG-4 Resolution(It works in case of StreamFormat=1)
-    m_psapi->SetH264Resolution(1920);    //H.264 Resolution(It works in case of StreamFormat=3)
-	
+    m_psapi->SetStreamFormat(6);        //Image format - JPEG:0,MPEG4:1
+    //m_psapi->SetJPEGResolution(640);    //JPEG Resolution(It works in case of StreamFormat=0)
+    //m_psapi->SetMPEG4Resolution(360);   //MPEG-4 Resolution(It works in case of StreamFormat=1)
+    //m_psapi->SetH264Resolution(640);    //H.264 Resolution(It works in case of StreamFormat=3)
+	m_psapi->SetInternetMode(1);
 	//-----------------------------------------------------
 	//Set Listener
 	//-----------------------------------------------------
@@ -251,11 +251,11 @@ void CSimpleSample_LiveDlg::LiveStart()
 	long lNVRChannel = 1;  // NVR'da izlemek istediğiniz kamera (2. Kanal)
 
 	// Video window güncelle
-	CWnd* pTuval = GetDlgItem(IDC_VIDEO_RENDER);
+	/*CWnd* pTuval = GetDlgItem(IDC_VIDEO_RENDER);
 	if (pTuval != NULL) {
 		m_psapi->SetVideoWindow(pTuval->GetSafeHwnd());
 	}
-
+    */
 	// NVR'a bağlan
 	lRet = m_psapi->Open();
 	m_csLog.Format("[Function] Open:%d", lRet);

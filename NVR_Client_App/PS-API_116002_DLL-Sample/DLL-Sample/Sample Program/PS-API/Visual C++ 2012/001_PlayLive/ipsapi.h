@@ -1316,5 +1316,3 @@ extern "C" PSAPIDECLSPEC void DeleteIPSAPI(	IPSAPI*	);
 
 
 #endif
-
-

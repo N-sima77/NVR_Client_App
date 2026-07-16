@@ -7,6 +7,14 @@
       "RelativeMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|solutionrelative:SimpleSample_LiveDlg.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|C:\\USERS\\NURSI\\ONEDRIVE\\DESKTOP\\NVR_CLIENT_APP\\NVR_CLIENT_APP\\PS-API_116002_DLL-SAMPLE\\DLL-SAMPLE\\SAMPLE PROGRAM\\PS-API\\VISUAL C\u002B\u002B 2012\\001_PLAYLIVE\\IPSAPI.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|solutionrelative:IPSAPI.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SampleCB.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|solutionrelative:SampleCB.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SimpleSample_LiveDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2CF9350D-2D0C-4856-88BC-5F3A86A5B167}|SimpleSample_Live.vcxproj|solutionrelative:SimpleSample_LiveDlg.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
@@ -18,8 +26,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SampleCB.cpp",
+              "DocumentMoniker": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SampleCB.cpp",
+              "RelativeDocumentMoniker": "SampleCB.cpp",
+              "ToolTip": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SampleCB.cpp",
+              "RelativeToolTip": "SampleCB.cpp",
+              "ViewState": "AgIAAGYAAAAAAAAAAIAwwFoAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-16T07:36:08.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ipsapi.h",
+              "DocumentMoniker": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\ipsapi.h",
+              "RelativeDocumentMoniker": "ipsapi.h",
+              "ToolTip": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\ipsapi.h",
+              "RelativeToolTip": "ipsapi.h",
+              "ViewState": "AgIAAK8AAAAAAAAAAAAgwMEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-16T07:26:19.877Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{2d7728c2-de0a-45b5-99aa-89b609dfde73}"
@@ -32,20 +66,20 @@
               "RelativeDocumentMoniker": "SimpleSample_LiveDlg.cpp",
               "ToolTip": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SimpleSample_LiveDlg.cpp*",
               "RelativeToolTip": "SimpleSample_LiveDlg.cpp*",
-              "ViewState": "AgIAAH4AAAAAAAAAAAAAAIMAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAAAIMAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-07-13T08:35:41.347Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "SimpleSample_LiveDlg.h",
               "DocumentMoniker": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SimpleSample_LiveDlg.h",
               "RelativeDocumentMoniker": "SimpleSample_LiveDlg.h",
               "ToolTip": "C:\\Users\\nursi\\OneDrive\\Desktop\\NVR_Client_App\\NVR_Client_App\\PS-API_116002_DLL-Sample\\DLL-Sample\\Sample Program\\PS-API\\Visual C\u002B\u002B 2012\\001_PlayLive\\SimpleSample_LiveDlg.h",
               "RelativeToolTip": "SimpleSample_LiveDlg.h",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAABgAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAIAwwDMAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2026-07-13T12:51:55.909Z",
               "EditorCaption": ""
