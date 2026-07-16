@@ -43,11 +43,43 @@ namespace SimpleSample_Live
             axipropsapiCtrl1.Password = "Admin123";
 
             //Set properties for display area
-            axipropsapiCtrl1.StreamFormat = 0;
+            axipropsapiCtrl1.StreamFormat = 6;
             axipropsapiCtrl1.JPEGResolution = 1280;
             axipropsapiCtrl1.MPEG4Resolution = 720;
             axipropsapiCtrl1.H264Resolution = 1280;
-            axipropsapiCtrl1.SetInternetMode(1);
+
+            /*
+            try
+            {
+                // 1. C# sarmalayıcısını (Wrapper) geçip gerçek C++ nesnesini yakalıyoruz
+                object gercekCihaz = axipropsapiCtrl1.GetOcx();
+
+                // 2. Komutu doğrudan gerçek nesneye "Reflection" ile zorla enjekte ediyoruz
+                gercekCihaz.GetType().InvokeMember("SetInternetMode",
+                    System.Reflection.BindingFlags.InvokeMethod,
+                    null,
+                    gercekCihaz,
+                    new object[] { 1 });
+
+                Logging("[Sistem] SetInternetMode arka kapıdan başarıyla gönderildi!");
+            }
+            catch (Exception ex)
+            {
+                Logging("[Uyarı] SetInternetMode zorlaması başarısız: " + ex.Message);
+            }*/
+            try
+            {
+                // ActiveX'in içine gizlenmiş "InternetMode" özelliğini  1 yapıyoruz
+                axipropsapiCtrl1.GetType().InvokeMember("InternetMode",
+                    System.Reflection.BindingFlags.SetProperty, null,
+                    axipropsapiCtrl1, new object[] { 1 });
+
+                Logging("[Sistem] InternetMode = 1 olarak ayarlandı!");
+            }
+            catch (Exception ex)
+            {
+                Logging("[Uyarı] InternetMode özelliği ayarlanamadı: " + ex.Message);
+            }
 
             //Set properties for event
             axipropsapiCtrl1.OnErrorEnable = 1;
@@ -66,7 +98,6 @@ namespace SimpleSample_Live
             axipropsapiCtrl1.OnOpStatusCBEnable = 0;
             axipropsapiCtrl1.OnAlmStatusCBEnable = 0;
             axipropsapiCtrl1.OnFtpStatusCBEnable = 0;
-
             if(axipropsapiCtrl1.PictureFitMode == 0){
                 //Fit mode (Fixed)
                 checkBox1.Checked = false;
