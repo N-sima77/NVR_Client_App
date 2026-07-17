@@ -148,11 +148,11 @@ BOOL CSimpleSample_PlayDlg::OnInitDialog()
 	//Set properties
 	//-----------------------------------------------------
 	//Set properties to connect the device
-	m_psapi->SetIPAddr("192.168.0.250");	//IP address of the device
-	m_psapi->SetDeviceType(1);				//Device type:0-3
+	m_psapi->SetIPAddr("192.168.11.114");	//IP address of the device
+	m_psapi->SetDeviceType(2);				//Device type:0-3
 	m_psapi->SetHttpPort(80);				//Port:0-65535
-	m_psapi->SetUserName("ADMIN");			//User name to access the device
-	m_psapi->SetPassword("12345");			//Password to access the device
+	m_psapi->SetUserName("admin");			//User name to access the device
+	m_psapi->SetPassword("Admin123");			//Password to access the device
 		
 	//Set properties for display area
 	m_psapi->SetVideoWindow(m_hWnd);		//Set the window handle to display

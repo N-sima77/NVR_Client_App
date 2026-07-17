@@ -36,15 +36,15 @@ namespace SimpleSample_Play
             //Set properties
             //----------------------------------------
             //Set properties to connect the device
-            axipropsapiCtrl1.IPAddr = "192.168.0.250";
-            axipropsapiCtrl1.DeviceType = 1;
+            axipropsapiCtrl1.IPAddr = "192.168.11.38";
+            axipropsapiCtrl1.DeviceType = 6;
             axipropsapiCtrl1.HttpPort = 80;
-            axipropsapiCtrl1.UserName = "ADMIN";
-            axipropsapiCtrl1.Password = "12345";
+            axipropsapiCtrl1.UserName = "admin";
+            axipropsapiCtrl1.Password = "Admin123";
 
             //Set properties for display area
-            axipropsapiCtrl1.StreamFormat = 0;
-            axipropsapiCtrl1.JPEGResolution = 640;
+            axipropsapiCtrl1.StreamFormat = 3;
+            axipropsapiCtrl1.JPEGResolution = 1280;
             axipropsapiCtrl1.MPEG4Resolution = 640;
             axipropsapiCtrl1.H264Resolution = 640;
 
@@ -253,8 +253,8 @@ namespace SimpleSample_Play
                 if (iRet > -1)
                 {
                     //Play
-                    iChannel = 1;
-                    chDate = "2010/07/01 00:00:00";
+                    iChannel = 2;    // görüntü alınacak kanal numarası
+                    chDate = "2026/07/17 08:40:00";
                     iBlockMode = 0;
                     iRet = axipropsapiCtrl1.Play(iChannel, chDate, iBlockMode);
                     Logging("[Function] Play:" + iRet.ToString());

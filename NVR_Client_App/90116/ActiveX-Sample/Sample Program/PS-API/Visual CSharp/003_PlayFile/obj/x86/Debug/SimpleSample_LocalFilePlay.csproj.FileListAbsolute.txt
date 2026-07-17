@@ -1,0 +1,16 @@
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.csproj.AssemblyReference.cache
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\Interop.IPROPSAPILib.dll
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\AxInterop.IPROPSAPILib.dll
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.csproj.ResolveComReference.cache
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\bin\SimpleSample_LocalFilePlay.exe.config
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\bin\SimpleSample_LocalFilePlay.exe
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\bin\SimpleSample_LocalFilePlay.pdb
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\bin\Interop.IPROPSAPILib.dll
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\bin\AxInterop.IPROPSAPILib.dll
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.Form1.resources
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.Form2.resources
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.Properties.Resources.resources
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.csproj.GenerateResource.cache
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.csproj.CoreCompileInputs.cache
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.exe
+C:\Users\nursi\OneDrive\Desktop\NVR_Client_App\NVR_Client_App\90116\ActiveX-Sample\Sample Program\PS-API\Visual CSharp\003_PlayFile\obj\x86\Debug\SimpleSample_LocalFilePlay.pdb
